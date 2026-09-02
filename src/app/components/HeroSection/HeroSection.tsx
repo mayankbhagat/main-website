@@ -2,7 +2,8 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, useScroll, useTransform } from "framer-motion";
+import Link from "next/link";
 import styles from "./HeroSection.module.css";
 import PartnerMarquee from "../PartnerMarquee/PartnerMarquee";
 
@@ -21,20 +22,41 @@ export default function HeroSection() {
   const [isLoadingFinished, setIsLoadingFinished] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
 
+  const { scrollY } = useScroll();
+  const y = useTransform(scrollY, [0, 1000], [0, 250]); // Parallax scroll effect
+
   // Loading Screen Timer & Video Trigger
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoadingFinished(true);
-      if (videoRef.current) {
-        videoRef.current.play().catch(e => console.warn("Auto-play blocked:", e));
+    if (typeof window !== "undefined") {
+      const hasPlayed = sessionStorage.getItem("introPlayed");
+      if (hasPlayed) {
+        setIsIntroFinished(true);
+        setIsLoadingFinished(true);
+        // Ensure video plays immediately on subsequent visits
+        if (videoRef.current) {
+          videoRef.current.play().catch(e => console.warn("Auto-play blocked:", e));
+        }
+        setTimeout(() => {
+          if (videoRef.current) {
+            videoRef.current.play().catch(e => console.warn("Auto-play blocked:", e));
+          }
+        }, 100);
+      } else {
+        const timer = setTimeout(() => {
+          setIsLoadingFinished(true);
+          if (videoRef.current) {
+            videoRef.current.play().catch(e => console.warn("Auto-play blocked:", e));
+          }
+        }, 2800); // 2.8s total loading screen duration
+        return () => clearTimeout(timer);
       }
-    }, 2800); // 2.8s total loading screen duration
-    return () => clearTimeout(timer);
+    }
   }, []);
 
   const handleSkip = () => {
     setIsIntroFinished(true);
     setActiveCaptionIndex(null);
+    sessionStorage.setItem("introPlayed", "true");
   };
 
   const handleTimeUpdate = (e: React.SyntheticEvent<HTMLVideoElement, Event>) => {
@@ -44,6 +66,7 @@ export default function HeroSection() {
     if (time >= 16.4) {
       setIsIntroFinished(true);
       setActiveCaptionIndex(null);
+      sessionStorage.setItem("introPlayed", "true");
     } else if (time >= 14.0) {
       setActiveCaptionIndex(5);
     } else if (time >= 10.8) {
@@ -66,10 +89,11 @@ export default function HeroSection() {
       
       // Failsafe timer: force the intro to end after 16.6s real-time, but only start counting after loading finishes
       let timer: NodeJS.Timeout;
-      if (isLoadingFinished) {
+      if (isLoadingFinished && !sessionStorage.getItem("introPlayed")) {
         timer = setTimeout(() => {
           setIsIntroFinished(true);
           setActiveCaptionIndex(null);
+          sessionStorage.setItem("introPlayed", "true");
         }, 16600);
       }
       return () => {
@@ -84,29 +108,29 @@ export default function HeroSection() {
     <div className={styles.heroWrapper}>
       <section className={styles.hero} id="hero" aria-label="Hero">
         
-        {/* Background Video */}
-        <video
-          ref={videoRef}
+        {/* Background Video with Parallax */}
+        <motion.video
+          ref={videoRef as any}
           loop
           muted
           playsInline
           preload="auto"
           disablePictureInPicture
-          onTimeUpdate={handleTimeUpdate}
+          onTimeUpdate={handleTimeUpdate as any}
           style={{
             position: 'absolute',
-            top: 0,
-            left: 0,
-            width: '100%',
-            height: '100%',
+            top: '-15%',
+            left: '-10%',
+            width: '120%',
+            height: '130%',
             objectFit: 'cover',
             zIndex: -2,
-            transform: 'translateZ(0)',
+            y,
             willChange: 'transform',
           }}
         >
           <source src="https://res.cloudinary.com/ax6dtcht/video/upload/v1786108868/Untitled_design_czx0vh.mp4" type="video/mp4" />
-        </video>
+        </motion.video>
 
         {/* Darkening Overlay for Video (appears after intro) */}
         <motion.div 
@@ -202,7 +226,7 @@ export default function HeroSection() {
                 <div className={styles.actionRow}>
                   {/* CTAs */}
                   <div className={styles.ctaRow}>
-                    <a href="#services" id="hero-learn-more" className={styles.ctaGlass}>Learn More</a>
+                    <Link href="/services" id="hero-learn-more" className={styles.ctaGlass}>Explore Services</Link>
                   </div>
                 </div>
               </motion.div>
