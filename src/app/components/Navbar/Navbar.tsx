@@ -207,15 +207,16 @@ export default function Navbar() {
       const currentScrollY = window.scrollY;
       let themeThreshold = window.innerHeight;
       if (pathname === "/") {
-        themeThreshold = window.innerHeight; // Hero is 100vh
-      } else if (pathname === "/solutions/enterprise-core-transformation" || pathname === "/services/intelligent-automation-agentic-ai" || pathname === "/solutions/rapid-application-engineering" || pathname === "/solutions/unified-service-experience-management" || pathname === "/solutions/cloud-adoption-and-cloud-first-engineering" || pathname === "/solutions/engineering-quality-and-reliability") {
-        themeThreshold = window.innerHeight * 0.7; // Hero is ~70vh
-      } else if (pathname === "/services") {
-        themeThreshold = window.innerHeight * 0.6; // Hero is 60vh
+        themeThreshold = window.innerHeight - 80; // Hero is 100vh, subtract navbar height
       } else if (isAlwaysLight) {
         themeThreshold = 0;
       } else {
-        themeThreshold = Math.max(window.innerHeight * 0.55, 450);
+        const heroElement = document.querySelector('section[class*="hero"], div[class*="hero"], [class*="heroBanner"]') as HTMLElement;
+        if (heroElement) {
+          themeThreshold = heroElement.offsetHeight - 80; // Subtract approximate navbar height
+        } else {
+          themeThreshold = Math.max(window.innerHeight * 0.6, 500) - 80;
+        }
       }
       
       const hideThreshold = themeThreshold > 0 ? themeThreshold : 200;
