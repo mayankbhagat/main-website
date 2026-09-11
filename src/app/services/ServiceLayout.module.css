@@ -10,13 +10,13 @@
 /* HERO SECTION */
 .heroBanner {
   position: relative;
-  height: 60vh;
-  min-height: 500px;
+  min-height: 60vh;
   width: 100%;
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end; /* Push to bottom to allow safe top padding */
+  justify-content: center;
+  padding-top: 8rem;
   padding-bottom: 4rem;
 }
 
@@ -66,7 +66,6 @@
 .heroContent {
   position: relative;
   z-index: 2;
-  padding-top: 10rem; /* Massive safe area for navbar */
 }
 
 .heroTitle {
@@ -74,15 +73,42 @@
   font-weight: 700;
   color: #ffffff;
   margin-bottom: 1rem;
-  letter-spacing: -0.5px;
+  letter-spacing: -0px;
 }
 
 .heroSubtitle {
   font-size: clamp(1rem, 1.5vw, 1.25rem); /* Reduced from 1.5rem max */
   font-weight: 300;
   color: rgba(255, 255, 255, 0.9);
-  max-width: 800px;
+  max-width: 50rem;
   line-height: 1.6;
+  margin-bottom: 2rem;
+}
+
+.heroActions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.heroButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.875rem 2rem;
+  background-color: #F47C36; /* Quantum Orange */
+  color: #ffffff;
+  font-weight: 600;
+  border-radius: 50rem;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 0.5rem 1rem rgba(244, 124, 54, 0.2);
+}
+
+.heroButton:hover {
+  background-color: #e86a24;
+  transform: translateY(-2px);
+  box-shadow: 0 0.75rem 1.5rem rgba(244, 124, 54, 0.3);
 }
 
 /* COMPREHENSIVE SOLUTIONS (New Asymmetric Layout) */
@@ -95,11 +121,11 @@
   display: grid;
   grid-template-columns: 32% 68%;
   gap: 0;
-  max-width: 1400px;
+  max-width: 87.5rem;
   margin: 0 auto;
 }
 
-@media (max-width: 992px) {
+@media (max-width: 62rem) {
   .solutionsContainer {
     grid-template-columns: 1fr;
     gap: 2rem;
@@ -108,7 +134,7 @@
 
 .solutionsLeft {
   position: sticky;
-  top: 120px; /* offset for navbar */
+  top: 7.5rem; /* offset for navbar */
   align-self: start;
   padding: 2rem;
   padding-left: 1.5rem;
@@ -139,7 +165,7 @@
   font-weight: 500;
   color: #312e81; /* Shifted from standard blue to deep indigo */
   cursor: pointer;
-  border-radius: 0 8px 8px 0;
+  border-radius: 0 0.5rem 0.5rem 0;
   transition: all 0.2s ease;
   border-left: 4px solid transparent;
 }
@@ -148,21 +174,21 @@
   background-color: #ffffff;
   color: #111827;
   border-left-color: #F47C36; /* Quantum Orange indicator */
-  box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+  box-shadow: 0 4px 0.9375rem rgba(0,0,0,0.03);
 }
 
 .solutionsRight {
   display: flex;
   flex-direction: column;
   background-color: #ffffff;
-  border-radius: 8px; /* Sharper SaaS border radius */
+  border-radius: 0.5rem; /* Sharper SaaS border radius */
   overflow: hidden;
-  box-shadow: 0 10px 40px rgba(0,0,0,0.05);
+  box-shadow: 0 0.625rem 2.5rem rgba(0,0,0,0.05);
 }
 
 .solutionsImageWrapper {
   width: 100%;
-  height: 380px;
+  height: 23.75rem;
   position: relative;
   overflow: hidden;
 }
@@ -191,7 +217,7 @@
   row-gap: 2.5rem;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 48rem) {
   .solutionsList {
     grid-template-columns: 1fr;
   }
@@ -207,7 +233,7 @@
   font-weight: 500;
   color: #4f46e5; /* Hadron Indigo */
   font-size: 1rem;
-  min-width: 24px;
+  min-width: 1.5rem;
 }
 
 .solutionTextWrapper {
@@ -334,8 +360,33 @@
 
 .whyGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  grid-template-columns: 1fr;
   gap: 2rem;
+}
+
+@media (min-width: 48rem) {
+  .whyGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 64rem) {
+  .whyGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  /* Make the 4th card span full width and display horizontally */
+  .whyCard:nth-child(4):last-child {
+    grid-column: 1 / -1;
+    flex-direction: row;
+  }
+  .whyCard:nth-child(4):last-child .whyCardImgWrapper {
+    width: 40%;
+    height: auto;
+    min-height: 15.625rem;
+  }
+  .whyCard:nth-child(4):last-child .whyCardBody {
+    width: 60%;
+  }
 }
 
 .whyCard {
@@ -353,12 +404,12 @@
 
 .whyCard:hover {
   transform: translateY(-4px); /* Grounded hover instead of bouncy */
-  box-shadow: 0 10px 25px rgba(0,0,0,0.07);
+  box-shadow: 0 0.625rem 1.5625rem rgba(0,0,0,0.07);
 }
 
 .whyCardImgWrapper {
   width: 100%;
-  height: 200px;
+  height: 12.5rem;
   overflow: hidden;
 }
 
@@ -406,7 +457,7 @@
 /* Responsive container */
 .container {
   width: 100%;
-  max-width: 1320px;
+  max-width: 82.5rem;
   margin: 0 auto;
   padding: 0 1.5rem;
 }

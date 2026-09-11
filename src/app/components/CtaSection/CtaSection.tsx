@@ -11,17 +11,20 @@ export default function CtaSection({ title, subtitle, buttonText }: CtaSectionPr
   return (
     <section className={styles.demoCta} id="contact" aria-label="Contact Us">
       <div className={`${styles.demoCtaInner} container`}>
-        <h2 className={styles.demoTitle}>
-          {title || "Looking for the Best IT Business Solutions?"}
-        </h2>
-        <p className={styles.demoSub}>
-          {subtitle || "Contact us today, and let us help you achieve your business objectives."}
-        </p>
-        <div className={styles.demoActions}>
-          <Link href="/contact" id="demo-email-cta" className={styles.demoPrimary}>
-            <span className={styles.btnText}>{buttonText || "Contact Us"}</span>
-            <span className={styles.btnArrow}>&rarr;</span>
-          </Link>
+        <div className={styles.glowBg}></div>
+        <div className={styles.contentWrapper}>
+          <h2 className={styles.demoTitle}>
+            {title || "Ready to transform your business?"}
+          </h2>
+          <p className={styles.demoSub}>
+            {subtitle || "Let's collaborate to build the future of your enterprise with our world-class IT solutions."}
+          </p>
+          <div className={styles.demoActions}>
+            <Link href="/contact" id="demo-email-cta" className={styles.demoPrimary}>
+              <span className={styles.btnText}>{buttonText || "Contact Us Today"}</span>
+              <span className={styles.btnArrow}>&rarr;</span>
+            </Link>
+          </div>
         </div>
       </div>
     </section>

@@ -1,0 +1,246 @@
+.wrapper {
+  background-color: #f8fafc; /* Match hero section background for seamless transition */
+  padding: 8rem 0;
+  position: relative;
+  z-index: 6; /* Just above PartnerRingSection (5) */
+}
+
+.circlesContainer {
+  position: absolute;
+  inset: 0;
+  clip-path: inset(0); /* Hide overflow without breaking sticky positioning */
+  z-index: 0;
+  pointer-events: none;
+}
+
+.stickyCircles {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  width: 100%;
+}
+
+.circle {
+  position: absolute;
+  border-radius: 50%;
+  top: 50%;
+  left: 0;
+  /* transform: translate(-50%, -50%); is now handled by Framer Motion (x/y) */
+}
+
+.circle1 {
+  width: 100vw;
+  height: 100vw;
+  border: 1px solid rgba(244, 124, 54, 0.2); /* Faint orange */
+}
+
+.circle2 {
+  width: 70vw;
+  height: 70vw;
+  border: 1px solid rgba(244, 124, 54, 0.3); /* Slightly darker */
+}
+
+.circle3 {
+  width: 40vw;
+  height: 40vw;
+  border: 1px solid rgba(244, 124, 54, 0.45); /* Most visible */
+}
+
+.blueDot {
+  position: absolute;
+  width: 0.75rem;
+  height: 0.75rem;
+  background-color: #1A73E8; /* Corporate Blue */
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 0.9375rem rgba(26, 115, 232, 0.6);
+}
+
+/* Ensure the light theme fallback is applied */
+:global(.light-theme) .wrapper {
+  background-color: #f8fafc;
+}
+
+.container {
+  width: 100%;
+  max-width: 81.25rem;
+  margin: 0 auto;
+  padding: 0 2rem;
+  display: flex;
+  gap: 6rem;
+  align-items: flex-start; /* Crucial for sticky behavior */
+  position: relative;
+  z-index: 1; /* Place above the grid background */
+}
+
+/* ── LEFT COLUMN (Sticky) ── */
+.leftColumn {
+  flex: 1;
+  position: sticky;
+  top: 9.375rem; /* Distance from top of viewport when stuck */
+  padding-right: 2rem;
+}
+
+.stickyContent {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.title {
+  font-size: clamp(2.5rem, 4vw, 4rem);
+  font-weight: 700;
+  color: #0f172a;
+  line-height: 1.1;
+  letter-spacing: -0.04em;
+}
+
+.description {
+  font-size: 1.2rem;
+  color: #475569;
+  line-height: 1.6;
+  max-width: 31.25rem;
+}
+
+/* ── RIGHT COLUMN (Scrolling) ── */
+.rightColumn {
+  flex: 0.85; /* Make the datacard slightly smaller/narrower */
+  display: flex;
+  flex-direction: column;
+  gap: 3rem; /* Increased gap since cards overlap */
+  padding-bottom: 2rem;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  transition: transform 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-0.5rem);
+}
+
+.cardMedia {
+  width: 100%;
+  height: 15rem;
+  position: relative;
+  overflow: hidden;
+  background-color: #0f172a;
+  border-radius: 1.5rem;
+  box-shadow: 0 0.625rem 1.875rem rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.cardVideo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 20%; /* Shift focus up to push the bottom logo further down/out */
+  /* Scale up heavily to fully crop out the Gemini logo in the bottom right */
+  transform: scale(1.35);
+  transition: transform 0.5s ease;
+}
+
+.card:hover .cardVideo {
+  transform: scale(1.4); /* Slight zoom on hover for premium feel */
+}
+
+.cardContent {
+  background: #ffffff;
+  border-radius: 1.25rem;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  /* Overlapping trimmed style */
+  width: 88%;
+  margin: 0 auto;
+  margin-top: -2.5rem; /* Pull it up over the video */
+  position: relative;
+  z-index: 2;
+  box-shadow: 0 0.9375rem 2.5rem rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  transition: box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.card:hover .cardContent {
+  box-shadow: 0 1.25rem 3.125rem rgba(0, 0, 0, 0.12);
+  border-color: rgba(244, 124, 54, 0.3);
+}
+
+.cardTitle {
+  font-size: 1.5rem; /* Slightly smaller title */
+  font-weight: 600;
+  color: #0f172a;
+  line-height: 1.3;
+  letter-spacing: -0.02em;
+}
+
+.cardDesc {
+  color: #475569;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.cardLink {
+  color: #F47C36; /* Hadron orange */
+  font-weight: 600;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  transition: gap 0.3s ease;
+}
+
+.card:hover .cardLink {
+  gap: 0.75rem; /* Arrow slightly moves on hover */
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 64rem) {
+  .container {
+    flex-direction: column;
+    gap: 4rem;
+  }
+
+  .leftColumn {
+    position: relative;
+    top: 0;
+    padding-right: 0;
+  }
+
+  .title {
+    font-size: 2.5rem;
+  }
+
+  .rightColumn {
+    width: 100%;
+  }
+
+  .card {
+    padding: 0; /* Removed the excessive 2rem padding that was squishing cards on tablet/mobile */
+  }
+}
+
+@media (max-width: 48rem) {
+  .wrapper {
+    padding: 4rem 0;
+  }
+  
+  .cardTitle {
+    font-size: 1.5rem;
+  }
+  
+  .cardContent {
+    width: 96%;
+    padding: 1.5rem;
+    margin-top: -1.875rem;
+  }
+  
+  .cardMedia {
+    height: 12.5rem;
+  }
+}

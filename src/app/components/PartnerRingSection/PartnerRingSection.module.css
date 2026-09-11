@@ -1,0 +1,219 @@
+.wrapper {
+  position: relative;
+  height: 120vh;
+  /* Minimized to allow 'one normal speed scroll' to pass the section */
+  background-color: #ffffff;
+  /* Changed to white to seamlessly blend into CoreServicesSection */
+  z-index: 5;
+  margin-top: -0.3125rem;
+}
+
+/* Fallback to dark if you prefer, but Alpy is white. The user screenshot is white! */
+:global(.light-theme) .wrapper {
+  background-color: #ffffff;
+}
+
+.stickyContainer {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #ffffff;
+}
+
+/* Fade out the bottom of the rings so they don't abruptly cut off */
+.stickyContainer::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 6.25rem;
+  background: linear-gradient(to top, #ffffff 0%, rgba(255, 255, 255, 0) 100%);
+  pointer-events: none;
+  z-index: 50;
+}
+
+/* ── Center Text ── */
+.centerTextContainer {
+  position: absolute;
+  z-index: 20;
+  text-align: center;
+  pointer-events: none;
+  max-width: 45rem;
+  padding: 0 1rem;
+}
+
+.title {
+  font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+  /* Considerably smaller */
+  font-weight: 700;
+  color: #0f172a;
+  line-height: 1.1;
+  letter-spacing: -0.04em;
+  margin-bottom: 1.5rem;
+}
+
+.highlight {
+  color: #F47C36;
+  /* Hadron orange */
+  font-size: 0.85em;
+  /* Make Hadron a little smaller */
+}
+
+.subtitle {
+  font-size: 1.125rem;
+  color: #475569;
+  line-height: 1.6;
+  max-width: 37.5rem;
+  margin: 0 auto;
+}
+
+/* ── Orbital Rings ── */
+.ringsWrapper {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  border-radius: 50%;
+  transform-origin: center center;
+}
+
+/* Draw the actual ring border with a fading mask so it's only bold on left/right */
+.ring::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 3px solid rgba(244, 124, 54, 0.5);
+  /* Broader, slightly more solid orange border */
+
+  /* The mask fades the top and bottom out, leaving only the sides solid */
+  -webkit-mask-image: linear-gradient(to bottom,
+      rgba(0, 0, 0, 0) 0%,
+      rgba(0, 0, 0, 1) 25%,
+      rgba(0, 0, 0, 1) 75%,
+      rgba(0, 0, 0, 0) 100%);
+  mask-image: linear-gradient(to bottom,
+      rgba(0, 0, 0, 0) 0%,
+      rgba(0, 0, 0, 1) 25%,
+      rgba(0, 0, 0, 1) 75%,
+      rgba(0, 0, 0, 0) 100%);
+  pointer-events: none;
+}
+
+/* Fix transform conflicts by nesting transforms properly */
+.ring1 {
+  width: 30rem;
+  height: 30rem;
+  margin-top: -15rem;
+  margin-left: -15rem;
+}
+
+.ring2 {
+  width: 48.75rem;
+  height: 48.75rem;
+  margin-top: -24.375rem;
+  margin-left: -24.375rem;
+}
+
+.ring3 {
+  width: 67.5rem;
+  height: 67.5rem;
+  margin-top: -33.75rem;
+  margin-left: -33.75rem;
+}
+
+/* ── Logo Bubbles ── */
+.logoWrapper {
+  position: absolute;
+  pointer-events: auto;
+}
+
+.logoCard {
+  background: #ffffff;
+  border-radius: 50%;
+  width: 5rem;
+  height: 5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0.625rem 1.875rem rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  transition: scale 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+}
+
+.logoCard:hover {
+  scale: 1.1;
+  box-shadow: 0 0.9375rem 2.5rem rgba(0, 0, 0, 0.15);
+}
+
+.logoImg {
+  width: 60%;
+  height: 60%;
+  object-fit: contain;
+  opacity: 0.9;
+  transition: opacity 0.3s ease;
+}
+
+/* Brighten up slightly on hover */
+.logoCard:hover .logoImg {
+  opacity: 1;
+}
+
+.dot {
+  position: absolute;
+  width: 0.875rem;
+  height: 0.875rem;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #60A5FA, #2563eb);
+  /* Pure blue atom as requested */
+  box-shadow: 0 0 0.75rem rgba(37, 99, 235, 0.5);
+  /* Blue glow */
+}
+
+@media (max-width: 64rem) {
+  .ring1 {
+    width: 22.5rem;
+    height: 22.5rem;
+    margin-top: -11.25rem;
+    margin-left: -11.25rem;
+  }
+
+  .ring2 {
+    width: 37.5rem;
+    height: 37.5rem;
+    margin-top: -18.75rem;
+    margin-left: -18.75rem;
+  }
+
+  .ring3 {
+    width: 52.5rem;
+    height: 52.5rem;
+    margin-top: -26.25rem;
+    margin-left: -26.25rem;
+  }
+
+  .title {
+    font-size: 2.5rem;
+  }
+
+  .logoCard {
+    width: 3.75rem;
+    height: 3.75rem;
+  }
+}

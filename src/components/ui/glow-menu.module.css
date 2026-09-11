@@ -2,7 +2,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100%;
+  width: auto;
 }
 
 .menuBar {
@@ -10,11 +10,11 @@
   align-items: center;
   gap: 0.5rem;
   background: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(12px);
+  backdrop-filter: blur(0.75rem);
   border: 1px solid rgba(255, 255, 255, 0.2);
   padding: 0.5rem;
-  border-radius: 99px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+  border-radius: 6.1875rem;
+  box-shadow: 0 0.625rem 2.5rem rgba(0, 0, 0, 0.5);
 }
 
 .menuItem {
@@ -23,7 +23,7 @@
   align-items: center;
   gap: 0.5rem;
   padding: 0.6rem 1rem;
-  border-radius: 99px;
+  border-radius: 6.1875rem;
   text-decoration: none;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -31,7 +31,7 @@
 }
 
 .menuItem:hover:not(.active) {
-  background: rgba(255, 255, 255, 0.05);
+  /* Removed static hover background since the sliding pill handles this */
 }
 
 .menuItem:hover .label {
@@ -41,9 +41,13 @@
 .activeBackground {
   position: absolute;
   inset: 0;
-  border-radius: 99px;
+  border-radius: 6.1875rem;
   z-index: 0;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255,255,255,0.2);
 }
 
 .iconContainer {
@@ -71,12 +75,29 @@
 /* Specific colors applied via global utility classes in Next.js or via inline styles. 
    Since user provided tailwind classes (text-blue-500) and we don't have tailwind, 
    we will simulate them here. */
-.text-blue-500 { color: #3b82f6 !important; }
-.text-orange-500 { color: #f97316 !important; }
-.text-green-500 { color: #22c55e !important; }
-.text-red-500 { color: #ef4444 !important; }
-.text-purple-500 { color: #a855f7 !important; }
-.text-cyan-500 { color: #06b6d4 !important; }
+.text-blue-500 {
+  color: #3b82f6 !important;
+}
+
+.text-orange-500 {
+  color: #f97316 !important;
+}
+
+.text-green-500 {
+  color: #22c55e !important;
+}
+
+.text-red-500 {
+  color: #ef4444 !important;
+}
+
+.text-purple-500 {
+  color: #a855f7 !important;
+}
+
+.text-cyan-500 {
+  color: #06b6d4 !important;
+}
 
 /* ── Dropdown Styles ── */
 .menuItemWrapper {
@@ -92,22 +113,33 @@
   left: 50%;
   transform: translateX(-50%);
   background: rgba(15, 10, 25, 0.95);
-  backdrop-filter: blur(16px);
+  backdrop-filter: blur(1rem);
   border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 16px;
+  border-radius: 1rem;
   padding: 1rem;
   display: grid;
   grid-template-rows: repeat(3, auto);
   grid-auto-flow: column;
   gap: 0.25rem 1rem;
   min-width: max-content;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.7);
+  box-shadow: 0 0.625rem 2.5rem rgba(0, 0, 0, 0.7);
   z-index: 50;
+}
+
+/* Invisible bridge to prevent dropdown from closing when moving mouse from item to dropdown */
+.dropdownMenu::before {
+  content: '';
+  position: absolute;
+  top: -1.25rem;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: -1;
 }
 
 .dropdownItem {
   padding: 0.75rem 1rem;
-  border-radius: 12px;
+  border-radius: 0.75rem;
   color: rgba(255, 255, 255, 0.7);
   font-size: 0.9rem;
   text-decoration: none;
@@ -131,15 +163,15 @@
   left: 100%;
   margin-left: 0.25rem;
   background: rgba(15, 10, 25, 0.95);
-  backdrop-filter: blur(16px);
+  backdrop-filter: blur(1rem);
   border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 12px;
+  border-radius: 0.75rem;
   padding: 0.5rem;
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
-  min-width: 200px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.7);
+  min-width: 12.5rem;
+  box-shadow: 0 0.625rem 2.5rem rgba(0, 0, 0, 0.7);
   z-index: 51;
 }
 
@@ -147,96 +179,146 @@
 .nestedDropdownMenu::before {
   content: '';
   position: absolute;
-  top: -20px;
-  bottom: -20px;
-  left: -20px;
-  width: 20px;
+  top: -1.25rem;
+  bottom: -1.25rem;
+  left: -1.25rem;
+  width: 1.25rem;
 }
 
-/* ── Mobile Navigation Styles ── */
-.hamburgerBtn {
-  display: none;
-  background: transparent;
-  border: none;
-  color: white;
-  cursor: pointer;
-  padding: 0.5rem;
-  z-index: 110;
+/* ── Mega Menu specific styles ── */
+.dropdownMenuMega {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(15, 10, 25, 0.95);
+  backdrop-filter: blur(1rem);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 1rem;
+  box-shadow: 0 0.625rem 2.5rem rgba(0, 0, 0, 0.7);
+  z-index: 50;
+  min-width: 750px;
+  width: max-content;
+  max-width: 90vw;
 }
 
-.mobileOverlay {
-  position: fixed;
-  top: 0;
+.dropdownMenuMega::before {
+  content: '';
+  position: absolute;
+  top: -1.25rem;
+  bottom: 0;
   left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(10, 10, 15, 0.95);
-  backdrop-filter: blur(20px);
-  z-index: 100;
-  display: flex;
-  flex-direction: column;
-  padding: 6rem 2rem 2rem 2rem;
-  overflow-y: auto;
+  right: 0;
+  z-index: -1;
 }
 
-.mobileMenuItem {
-  padding: 1.25rem 0;
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: white;
-  text-decoration: none;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+.megaMenuInner {
   display: flex;
-  flex-direction: column;
+  padding: 1.5rem;
+  gap: 2rem;
 }
 
-.mobileMenuItemHeader {
+.megaGroups {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
+  gap: 2.5rem;
+  flex: 2;
 }
 
-.mobileSubMenu {
+.megaGroup {
   display: flex;
   flex-direction: column;
+  gap: 0.5rem;
+}
+
+.megaGroupTitle {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: rgba(255, 255, 255, 0.5);
+  margin-bottom: 0.5rem;
   padding-left: 1rem;
-  padding-top: 1rem;
+}
+
+.megaGroupItems {
+  display: flex;
+  flex-direction: column;
+}
+
+.megaFeatured {
+  flex: 1;
+  border-left: 1px solid rgba(255, 255, 255, 0.1);
+  padding-left: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.megaFeaturedInner {
+  display: flex;
+  flex-direction: column;
   gap: 0.75rem;
 }
 
-.mobileSubMenuItem {
-  font-size: 1.1rem;
+.featuredEyebrow {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--accent, #f97316);
+  font-weight: bold;
+}
+
+.featuredTitle {
+  font-size: 1.25rem;
+  color: #ffffff;
+  margin: 0;
+}
+
+.featuredDesc {
+  font-size: 0.85rem;
+  line-height: 1.5;
   color: rgba(255, 255, 255, 0.7);
+  margin: 0;
+}
+
+.featuredCta {
+  margin-top: 0.5rem;
+  font-size: 0.85rem;
+  color: var(--accent, #f97316);
   text-decoration: none;
-  padding: 0.25rem 0;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  transition: all 0.2s ease;
 }
 
-.mobileSubMenuItem:active,
-.mobileMenuItemHeader:active {
-  color: var(--accent);
+.featuredCta:hover {
+  opacity: 0.8;
 }
 
-.isLogo {
-  /* Used as an identifier for the logo wrapper */
-}
-
-@media (max-width: 1024px) {
+@media (max-width: 64rem) {
   .menuBarContainer {
     width: 100%;
-    padding: 0 1rem;
   }
+
   .menuBar {
     width: 100%;
-    justify-content: space-between;
+    justify-content: flex-start;
+    padding-left: 1rem;
+    padding-right: 4rem;
   }
-  .menuItemWrapper:not(.isLogo) {
+  
+  .menuItemWrapper.isLogo .menuItem {
+    padding: 0.5rem 0;
+    background: transparent !important;
+  }
+  
+  .menuItemWrapper.isLogo .activeBackground {
     display: none;
   }
-  .hamburgerBtn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+
+  .menuItemWrapper:not(.isLogo) {
+    display: none;
   }
 }
 
@@ -244,7 +326,7 @@
 .lightMode .menuBar {
   background: rgba(245, 245, 245, 0.85);
   border-color: rgba(0, 0, 0, 0.1);
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0.625rem 2.5rem rgba(0, 0, 0, 0.1);
 }
 
 .lightMode .label {
@@ -252,22 +334,46 @@
 }
 
 .lightMode .menuItem:hover:not(.active) {
-  background: rgba(0, 0, 0, 0.05);
+  /* Removed static hover background */
 }
 
 .lightMode .menuItem:hover .label {
   color: var(--accent) !important;
 }
 
+/* Ensure the pill looks great in light mode */
+.lightMode .activeBackground {
+  background: rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05), inset 0 1px 2px rgba(255, 255, 255, 1);
+}
+
 .lightMode .isLogo img {
-  filter: brightness(0);
+  /* Removed filter: brightness(0) so the colored logo displays its true colors */
 }
 
 .lightMode .dropdownMenu,
-.lightMode .nestedDropdownMenu {
+.lightMode .nestedDropdownMenu,
+.lightMode .dropdownMenuMega {
   background: rgba(255, 255, 255, 0.95);
   border-color: rgba(0, 0, 0, 0.1);
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0.625rem 2.5rem rgba(0, 0, 0, 0.1);
+}
+
+.lightMode .megaFeatured {
+  border-left-color: rgba(0, 0, 0, 0.1);
+}
+
+.lightMode .megaGroupTitle {
+  color: rgba(0, 0, 0, 0.4);
+}
+
+.lightMode .featuredTitle {
+  color: #0f172a;
+}
+
+.lightMode .featuredDesc {
+  color: rgba(15, 23, 42, 0.7);
 }
 
 .lightMode .dropdownItem {

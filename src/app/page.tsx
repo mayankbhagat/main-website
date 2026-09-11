@@ -1,16 +1,14 @@
 import dynamic from "next/dynamic";
 import Navbar from "./components/Navbar/Navbar";
-import HeroSection from "./components/HeroSection/HeroSection";
 import LanguageScrollSection from "./components/LanguageScroll/LanguageScrollSection";
 import styles from "./page.module.css";
 
 // Below-fold sections — loaded after initial paint
-const FeatureScrollSection    = dynamic(() => import("./components/FeatureScroll/FeatureScrollSection"));
-const OurStorySection         = dynamic(() => import("./components/OurStorySection/OurStorySection"));
+const PartnerRingSection      = dynamic(() => import("./components/PartnerRingSection/PartnerRingSection"));
+const CorePracticesSection    = dynamic(() => import("./components/CorePracticesSection/CorePracticesSection"));
+const InteractiveCanvasSection = dynamic(() => import("./components/InteractiveCanvasSection/InteractiveCanvasSection"));
 const WhyHadronSection        = dynamic(() => import("./components/WhyHadronSection/WhyHadronSection"));
-const CoreValuesSection       = dynamic(() => import("./components/CoreValuesSection/CoreValuesSection"));
 const CoreServicesSection     = dynamic(() => import("./components/CoreServicesSection/CoreServicesSection"));
-const AssetsOfExcellenceSection = dynamic(() => import("./components/AssetsOfExcellence/AssetsOfExcellenceSection"));
 const CtaSection              = dynamic(() => import("./components/CtaSection/CtaSection"));
 const Footer                  = dynamic(() => import("./components/Footer/Footer"));
 
@@ -19,29 +17,22 @@ export default function HomePage() {
     <main className={`${styles.main} light-theme`}>
       <Navbar />
 
-      {/* ── HERO ── */}
-      <HeroSection />
+      {/* ── ALPY-STYLE PARTNER RING (NEW HERO) ── */}
+      <PartnerRingSection />
 
+      {/* ── INTERACTIVE CANVAS SECTION (NEW) ── */}
+      <InteractiveCanvasSection />
 
-      {/* ── FEATURE NUMBER TICKER ── */}
-      <FeatureScrollSection />
-
-      {/* ── OUR STORY ── */}
-      <OurStorySection />
-
-      {/* ── WHY HADRON GBS ── */}
+      {/* ── WHY HADRON GBS (Advantage) ── */}
       <WhyHadronSection />
 
-      <div style={{ backgroundColor: '#0f172a' }}>
-        {/* ── MISSION & VISION (4 P's) ── */}
-        <CoreValuesSection />
+      {/* ── ALPY-STYLE STICKY SOLUTIONS ── */}
+      <CorePracticesSection />
 
+      <div style={{ backgroundColor: '#0f172a' }}>
         {/* ── CORE SERVICES ── */}
         <CoreServicesSection />
       </div>
-
-      {/* ── ASSETS OF EXCELLENCE ── */}
-      <AssetsOfExcellenceSection />
 
       {/* ── LANGUAGE REEL + zooming globe ── */}
       <LanguageScrollSection />

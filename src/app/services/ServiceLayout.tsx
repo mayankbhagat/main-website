@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import Navbar from "../components/Navbar/Navbar";
 import Footer from "../components/Footer/Footer";
+import CtaSection from "../components/CtaSection/CtaSection";
 import styles from "./ServiceLayout.module.css";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -33,6 +34,9 @@ export interface ServiceLayoutProps {
   solutions: SolutionItem[];
   framework: FrameworkItem[];
   whyHadron: WhyHadronItem[];
+  expertName?: string;
+  contactText?: string;
+  contactHref?: string;
 }
 
 export default function ServiceLayout({
@@ -45,6 +49,9 @@ export default function ServiceLayout({
   solutions,
   framework,
   whyHadron,
+  expertName,
+  contactText,
+  contactHref = "/contact",
 }: ServiceLayoutProps) {
   const [activeTab, setActiveTab] = useState<'offerings' | 'framework'>('offerings');
 
@@ -110,6 +117,16 @@ export default function ServiceLayout({
             >
               {shortSubtitle}
             </motion.p>
+            <motion.div
+              className={styles.heroActions}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+            >
+              <a href={contactHref} className={styles.heroButton}>
+                {contactText || `Contact for ${expertName || title || "Consulting"}`}
+              </a>
+            </motion.div>
           </div>
         </section>
 
@@ -235,13 +252,6 @@ export default function ServiceLayout({
                     <div className={styles.whyCardBody}>
                       <h3 className={styles.whyCardTitle}>{why.title}</h3>
                       <p className={styles.whyCardDesc}>{why.desc}</p>
-                      <a href="#" className={styles.whyCardLink} onClick={(e) => e.preventDefault()}>
-                        Read More 
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                          <line x1="5" y1="12" x2="19" y2="12"></line>
-                          <polyline points="12 5 19 12 12 19"></polyline>
-                        </svg>
-                      </a>
                     </div>
                   </motion.div>
                 ))}
@@ -251,6 +261,10 @@ export default function ServiceLayout({
         )}
 
       </main>
+      <CtaSection 
+        title={`Contact our ${expertName || "IT"} expert`} 
+        subtitle="Contact us today, and let us help you achieve your business objectives." 
+      />
       <Footer />
     </>
   );
