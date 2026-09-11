@@ -1,13 +1,74 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect, createContext, useContext } from "react";
 import styles from "./JobApplicationForm.module.css";
+
+const FormContext = createContext<any>(null);
+
+const FormGroup = ({ 
+  label, 
+  name, 
+  type = "text", 
+  required = false, 
+  options,
+  placeholder 
+}: { 
+  label: string, 
+  name: string, 
+  type?: "text" | "date" | "email" | "select" | "file", 
+  required?: boolean,
+  options?: string[],
+  placeholder?: string
+}) => {
+  const { formValues, handleInputChange } = useContext(FormContext);
+  return (
+    <div className={styles.formGroup}>
+      <label className={styles.label} htmlFor={name}>
+        {label} {required && <span className={styles.requiredStar}>*</span>}
+      </label>
+      {type === "select" ? (
+        <select className={styles.select} name={name} id={name} required={required} value={formValues[name] || ""} onChange={handleInputChange}>
+          <option value="" disabled>Select an option</option>
+          {options?.map(opt => <option key={opt} value={opt}>{opt}</option>)}
+        </select>
+      ) : type === "file" ? (
+        <input className={styles.fileInput} type="file" name={name} id={name} required={required} accept=".pdf,.doc,.docx" />
+      ) : (
+        <input className={styles.input} type={type} name={name} id={name} required={required} placeholder={placeholder} value={formValues[name] || ""} onChange={handleInputChange} />
+      )}
+    </div>
+  );
+};
 
 export default function JobApplicationForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState("");
   const [step, setStep] = useState(1);
+  const [formValues, setFormValues] = useState<Record<string, string>>({});
+
+  useEffect(() => {
+    const savedData = sessionStorage.getItem('jobApplicationForm');
+    if (savedData) {
+      try {
+        setFormValues(JSON.parse(savedData));
+      } catch (e) {}
+    }
+    const savedStep = sessionStorage.getItem('jobApplicationStep');
+    if (savedStep) {
+      setStep(parseInt(savedStep, 10));
+    }
+  }, []);
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value, type } = e.target;
+    if (type === 'file') return;
+    setFormValues(prev => {
+      const next = { ...prev, [name]: value };
+      sessionStorage.setItem('jobApplicationForm', JSON.stringify(next));
+      return next;
+    });
+  };
 
   const handleNext = () => {
     const currentStepFields = document.querySelectorAll(`[data-step="${step}"] input[required], [data-step="${step}"] select[required]`);
@@ -19,20 +80,73 @@ export default function JobApplicationForm() {
       }
     });
     if (isValid) {
-      setStep(prev => prev + 1);
+      const nextStep = step + 1;
+      setStep(nextStep);
+      sessionStorage.setItem('jobApplicationStep', nextStep.toString());
     }
   };
-  const handlePrev = () => setStep(prev => prev - 1);
+
+  const handlePrev = () => {
+    const prevStep = step - 1;
+    setStep(prevStep);
+    sessionStorage.setItem('jobApplicationStep', prevStep.toString());
+  };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    
+    if (step < 3) {
+      handleNext();
+      return;
+    }
+
+    const formElement = e.currentTarget;
+    
+    // Validate ALL required fields across all steps
+    const allRequiredFields = formElement.querySelectorAll('input[required], select[required]');
+    let firstInvalidField: any = null;
+
+    for (let i = 0; i < allRequiredFields.length; i++) {
+      const field = allRequiredFields[i] as any;
+      if (!field.checkValidity()) {
+        firstInvalidField = field;
+        break;
+      }
+    }
+
+    if (firstInvalidField) {
+      // Find which step this field belongs to and navigate there
+      const stepDiv = firstInvalidField.closest('[data-step]');
+      if (stepDiv) {
+        const stepNum = parseInt(stepDiv.getAttribute('data-step') || '1', 10);
+        setStep(stepNum);
+        sessionStorage.setItem('jobApplicationStep', stepNum.toString());
+        
+        // Wait for React to render the step before reporting validity
+        setTimeout(() => {
+          firstInvalidField.reportValidity();
+        }, 50);
+      }
+      return;
+    }
+
     setIsSubmitting(true);
     setError("");
     setSuccess(false);
 
     try {
       const formElement = e.currentTarget;
-      const formData = new FormData(formElement);
+      
+      const formData = new FormData();
+      Object.entries(formValues).forEach(([key, value]) => {
+        formData.append(key, value);
+      });
+      
+      // Also need to get cvFile since it's uncontrolled
+      const cvFileInput = formElement.querySelector('input[type="file"]') as HTMLInputElement;
+      if (cvFileInput && cvFileInput.files && cvFileInput.files[0]) {
+        formData.append('cvFile', cvFileInput.files[0]);
+      }
 
       const response = await fetch("/api/apply", {
         method: "POST",
@@ -46,7 +160,11 @@ export default function JobApplicationForm() {
       }
 
       setSuccess(true);
+      setFormValues({});
       formElement.reset();
+      sessionStorage.removeItem('jobApplicationForm');
+      sessionStorage.removeItem('jobApplicationStep');
+      setStep(1);
     } catch (err: any) {
       setError(err.message || "Failed to submit application. Please try again.");
     } finally {
@@ -54,39 +172,8 @@ export default function JobApplicationForm() {
     }
   };
 
-  const FormGroup = ({ 
-    label, 
-    name, 
-    type = "text", 
-    required = false, 
-    options,
-    placeholder 
-  }: { 
-    label: string, 
-    name: string, 
-    type?: "text" | "date" | "email" | "select" | "file", 
-    required?: boolean,
-    options?: string[],
-    placeholder?: string
-  }) => (
-    <div className={styles.formGroup}>
-      <label className={styles.label} htmlFor={name}>
-        {label} {required && <span className={styles.requiredStar}>*</span>}
-      </label>
-      {type === "select" ? (
-        <select className={styles.select} name={name} id={name} required={required} defaultValue="">
-          <option value="" disabled>Select an option</option>
-          {options?.map(opt => <option key={opt} value={opt}>{opt}</option>)}
-        </select>
-      ) : type === "file" ? (
-        <input className={styles.fileInput} type="file" name={name} id={name} required={required} accept=".pdf,.doc,.docx" />
-      ) : (
-        <input className={styles.input} type={type} name={name} id={name} required={required} placeholder={placeholder} />
-      )}
-    </div>
-  );
-
   return (
+    <FormContext.Provider value={{ formValues, handleInputChange }}>
     <div className={styles.formContainer}>
       <h2 className={styles.title}>Hadron GBS Job Application Form</h2>
       <p className={styles.subtitle}>
@@ -105,13 +192,13 @@ export default function JobApplicationForm() {
         </div>
       )}
 
-      <form onSubmit={handleSubmit} className={styles.form} encType="multipart/form-data">
+      <form id="job-application-form" onSubmit={handleSubmit} className={styles.form} encType="multipart/form-data" noValidate>
         
         {/* STEP 1 */}
         <div style={{ display: step === 1 ? 'block' : 'none' }} data-step="1">
         <h3 className={styles.sectionTitle}>Basic Information</h3>
         <div className={styles.row}>
-          <FormGroup label="Applicant's Full Name (First-Mid-Last)" name="fullName" required placeholder="John Doe" />
+          <FormGroup label="Applicant's Full Name (First & Last)" name="fullName" required placeholder="John Doe" />
           <FormGroup label="Email Address" name="email" type="email" required placeholder="john@example.com" />
         </div>
         <div className={styles.row}>
@@ -259,5 +346,6 @@ export default function JobApplicationForm() {
 
       </form>
     </div>
+    </FormContext.Provider>
   );
 }
