@@ -205,19 +205,20 @@ export default function Navbar() {
       if (typeof window === "undefined") return;
 
       const currentScrollY = window.scrollY;
-      const hideThreshold = 100;
-      let themeThreshold = window.innerHeight * 0.9;
+      let themeThreshold = window.innerHeight;
       if (pathname === "/") {
-        themeThreshold = window.innerHeight * 0.9;
+        themeThreshold = window.innerHeight; // Hero is 100vh
       } else if (pathname === "/solutions/enterprise-core-transformation" || pathname === "/services/intelligent-automation-agentic-ai" || pathname === "/solutions/rapid-application-engineering" || pathname === "/solutions/unified-service-experience-management" || pathname === "/solutions/cloud-adoption-and-cloud-first-engineering" || pathname === "/solutions/engineering-quality-and-reliability") {
-        themeThreshold = window.innerHeight * 0.65;
+        themeThreshold = window.innerHeight * 0.7; // Hero is ~70vh
       } else if (pathname === "/services") {
-        themeThreshold = window.innerHeight * 0.65;
+        themeThreshold = window.innerHeight * 0.6; // Hero is 60vh
       } else if (isAlwaysLight) {
         themeThreshold = 0;
       } else {
         themeThreshold = Math.max(window.innerHeight * 0.55, 450);
       }
+      
+      const hideThreshold = themeThreshold > 0 ? themeThreshold : 200;
       
       setScrolled(currentScrollY > 50);
       setIsLightMode(isAlwaysLight || currentScrollY > themeThreshold);
