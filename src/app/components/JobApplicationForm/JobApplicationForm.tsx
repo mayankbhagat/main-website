@@ -194,6 +194,20 @@ export default function JobApplicationForm() {
 
       <form id="job-application-form" onSubmit={handleSubmit} className={styles.form} encType="multipart/form-data" noValidate>
         
+        {/* HONEYPOT FIELD FOR SPAM BOTS */}
+        <div style={{ position: 'absolute', opacity: 0, top: '-9999px', left: '-9999px' }} aria-hidden="true">
+          <label htmlFor="companyWebsite">Company Website</label>
+          <input 
+            type="text" 
+            id="companyWebsite" 
+            name="companyWebsite" 
+            value={formValues.companyWebsite || ''} 
+            onChange={handleInputChange} 
+            tabIndex={-1} 
+            autoComplete="off" 
+          />
+        </div>
+
         {/* STEP 1 */}
         <div style={{ display: step === 1 ? 'block' : 'none' }} data-step="1">
         <h3 className={styles.sectionTitle}>Basic Information</h3>
