@@ -340,8 +340,15 @@ export default function CareersPage() {
               Enterprise transformation starts with the right conversation. Tell us where your platforms are falling short.
             </p>
             <div className={styles.btnGroup}>
-              <a href={APPLY_LINK} target="_blank" rel="noopener noreferrer" className={styles.primaryBtn}>
-                See Open Role
+              <a 
+                href="#application-form" 
+                className={styles.primaryBtn}
+                onClick={(e) => {
+                  e.preventDefault();
+                  document.getElementById('application-form')?.scrollIntoView({ behavior: 'smooth' });
+                }}
+              >
+                See Open Roles
               </a>
               <a href={LINKEDIN_LINK} target="_blank" rel="noopener noreferrer" className={styles.secondaryBtn}>
                 Connect on LinkedIn
