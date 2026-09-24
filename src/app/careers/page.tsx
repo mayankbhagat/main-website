@@ -31,7 +31,7 @@ export default function CareersPage() {
             muted
             playsInline
             className={styles.heroVideo}
-            style={{ objectPosition: 'center top', transform: 'scale(1.12) translateY(2%)' }}
+            style={{ objectPosition: 'center center', transform: 'scale(1.15)' }}
           />
           <div className={styles.heroOverlay}></div>
           <div className={styles.heroContent}>

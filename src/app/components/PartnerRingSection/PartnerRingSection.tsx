@@ -82,10 +82,10 @@ export default function PartnerRingSection() {
         
         {/* Central Text */}
         <div className={styles.centerTextContainer}>
-          <h2 className={styles.title} style={{ fontSize: 'clamp(2rem, 4vw, 3.6rem)', lineHeight: 1.1 }}>
+          <h1 className={styles.title} style={{ fontSize: 'clamp(2rem, 4vw, 3.6rem)', lineHeight: 1.1 }}>
             Enterprise Platforms,<br/>
             Made <span className={styles.highlight}>Intelligent.</span>
-          </h2>
+          </h1>
           <p style={{ fontSize: '1.25rem', color: '#6b7280', marginTop: '1rem', maxWidth: '600px', marginInline: 'auto' }}>
             Hadron GBS helps enterprises turn AI into operational advantage. So your platforms don't just run; they predict, adapt, and improve.
           </p>

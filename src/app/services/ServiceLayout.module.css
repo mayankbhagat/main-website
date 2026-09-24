@@ -40,7 +40,7 @@
   object-fit: cover;
   object-position: center top;
   z-index: 0;
-  transform: scale(1.12) translateY(2%);
+  transform: scale(1.15);
 }
 
 .heroVideoRotated {
