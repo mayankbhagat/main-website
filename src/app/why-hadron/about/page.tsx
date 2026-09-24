@@ -68,7 +68,7 @@ export default function AboutPage() {
       
       {/* HERO SECTION */}
       <section className={styles.heroBanner}>
-        <video 
+        <video preload="auto" 
           src="https://res.cloudinary.com/dyhlpxwwo/video/upload/v1788242997/Use_the_attached_image_as_the_1_pwo6nq.mp4"
           autoPlay
           loop

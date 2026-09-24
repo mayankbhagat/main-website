@@ -72,7 +72,7 @@ export default function ServicesPage() {
       <section className={styles.heroSection}>
         {/* Background Video */}
         <div className={styles.heroVideoContainer}>
-          <video 
+          <video preload="auto" 
             autoPlay 
             loop 
             muted 

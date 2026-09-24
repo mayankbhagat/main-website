@@ -24,7 +24,7 @@ export default function CareersPage() {
         
         {/* HERO SECTION */}
         <section className={styles.heroSection}>
-          <video
+          <video preload="auto"
             src="https://res.cloudinary.com/dyhlpxwwo/video/upload/v1789978648/Use_the_attached_image_as_the_11_mpadsw.mp4"
             autoPlay
             loop
