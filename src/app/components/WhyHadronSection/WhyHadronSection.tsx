@@ -96,10 +96,10 @@ export default function WhyHadronSection() {
         }
 
         // 1. Simultaneous Staggered Card Growth from absolute bottom
-        tl.to(cards[0], { height: '72vh', ease: "power2.out", duration: 0.25 }, 0.00);
-        tl.to(cards[1], { height: '72vh', ease: "power2.out", duration: 0.50 }, 0.00);
-        tl.to(cards[2], { height: '72vh', ease: "power2.out", duration: 0.75 }, 0.00);
-        tl.to(cards[3], { height: '72vh', ease: "power2.out", duration: 1.00 }, 0.00);
+        tl.to(cards[0], { height: '60vh', ease: "power2.out", duration: 0.25 }, 0.00);
+        tl.to(cards[1], { height: '60vh', ease: "power2.out", duration: 0.50 }, 0.00);
+        tl.to(cards[2], { height: '60vh', ease: "power2.out", duration: 0.75 }, 0.00);
+        tl.to(cards[3], { height: '60vh', ease: "power2.out", duration: 1.00 }, 0.00);
 
         // 2. Synchronized Roller X Translation & Locked Rotation (Over full 1.0 duration)
         tl.to(rollerRef.current, {
@@ -196,6 +196,17 @@ export default function WhyHadronSection() {
           >
             The <span style={{ color: '#F17943' }}>Hadron</span> Advantage
           </h2>
+          <p
+            style={{
+              fontSize: 'clamp(1rem, 1.2vw, 1.2rem)',
+              color: '#475569',
+              marginTop: '0.75rem',
+              fontWeight: 500,
+              letterSpacing: '0.01em'
+            }}
+          >
+            Architect it right &rarr; Deliver measurable outcomes &rarr; Accelerate with AI &rarr; Own the lifecycle
+          </p>
         </div>
 
         {/* Full-screen track container pushing content to bottom */}
