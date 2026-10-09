@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 import styles from "./CoreValuesSection.module.css";
 
@@ -9,7 +9,7 @@ const VALUES = [
     p: "P1",
     title: "Predictive",
     desc: "We anticipate platform risks, technology shifts, and organizational needs before they become problems. Leveraging AI-driven analytics, we forecast IT demands and mitigate bottlenecks proactively.",
-    gradientFrom: "#F47C36",
+    gradientFrom: "#F17943",
     gradientTo: "#ea580c",
   },
   {
@@ -24,7 +24,7 @@ const VALUES = [
     title: "Progressive",
     desc: "We continually expand our capabilities from ITSM to GenAI to keep clients at the forefront. Innovation is in our DNA, ensuring your enterprise scales with the latest technological breakthroughs.",
     gradientFrom: "#FF9A5A",
-    gradientTo: "#F47C36",
+    gradientTo: "#F17943",
   },
   {
     p: "P4",
@@ -40,6 +40,13 @@ const Y_OFFSETS = ["0px", "0px", "0px", "0px"];
 
 export default function CoreValuesSection() {
   const sectionRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "end start"]
+  });
+
+  const headerY = useTransform(scrollYProgress, [0, 1], ["5%", "-5%"]);
+  const cardsY = useTransform(scrollYProgress, [0, 1], ["10%", "-10%"]);
 
   return (
     <section
@@ -51,10 +58,11 @@ export default function CoreValuesSection() {
       <div className={`${styles.headerWrapper} container`}>
         <motion.div
           className={styles.header}
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
+          style={{ y: headerY, z: 0, willChange: 'transform' }}
         >
           <span className={styles.tag}>Mission &amp; Vision</span>
           <h2 className={styles.title}>The 4 Ps of Hadron</h2>
@@ -65,7 +73,7 @@ export default function CoreValuesSection() {
       </div>
 
       {/* ── Cards ── */}
-      <div className={styles.cardsRow}>
+      <motion.div className={styles.cardsRow} style={{ y: cardsY, z: 0, willChange: 'transform' }}>
         {VALUES.map((card, idx) => (
           <motion.div
             key={card.title}
@@ -95,7 +103,7 @@ export default function CoreValuesSection() {
             </div>
           </motion.div>
         ))}
-      </div>
+      </motion.div>
     </section>
   );
 }

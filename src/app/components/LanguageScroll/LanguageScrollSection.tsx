@@ -61,7 +61,7 @@ export default function LanguageScrollSection() {
       id="language-section" — GlobalGlobe reads this via document.getElementById
       to determine when to switch from hero-horizon state to language-zoom state.
     */
-    <div
+    <section
       ref={sectionRef}
       id="language-section"
       data-active-index={activeIndex}
@@ -91,22 +91,7 @@ export default function LanguageScrollSection() {
                 <span className={styles.mainText}>{currentItem.text}</span>
                 <span className={styles.subText}>{currentItem.sub}</span>
 
-                <AnimatePresence mode="wait">
-                  {currentItem.region && (
-                    <motion.div
-                      key={`r-${activeIndex}`}
-                      variants={regionVariants}
-                      initial="enter"
-                      animate="center"
-                      exit="exit"
-                      transition={{ duration: 0.35, delay: 0.15 }}
-                      className={styles.regionTag}
-                    >
-                      <span className={styles.regionDot} />
-                      <span>{currentItem.region}</span>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
+
               </motion.div>
             </AnimatePresence>
           </div>
@@ -149,6 +134,6 @@ export default function LanguageScrollSection() {
           </button>
         </div>
       </div>
-    </div>
+    </section>
   );
 }

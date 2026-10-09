@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 import styles from "./FeatureScrollSection.module.css";
 
 const FEATURES = [
@@ -73,24 +74,26 @@ export default function FeatureScrollSection() {
         
         {/* ── Section Header ── */}
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
-          <h2 style={{ fontSize: '0.95rem', letterSpacing: '0.1em', textTransform: 'uppercase', color: '#0f172a', fontWeight: 600 }}>
-            OUR CAPABILITIES
+          <h2 style={{ fontSize: '0.95rem', letterSpacing: '0.1em', textTransform: 'uppercase', color: '#16325F', fontWeight: 600 }}>
+            OUR EXPERTISE
           </h2>
           <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
             <button 
               onClick={handlePrev} 
-              style={{ background: 'transparent', border: '1px solid #cbd5e1', borderRadius: '4px', width: '32px', height: '32px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', color: '#0f172a' }}
+              className={`${styles.navArrow} ${styles.navArrowLeft}`}
+              aria-label="Previous feature"
             >
-              ←
+              <ArrowLeft size={24} strokeWidth={3} color="black" />
             </button>
             <span style={{ fontSize: '0.9rem', color: '#334155', fontWeight: 500 }}>
               {activeIndex + 1} / {FEATURES.length}
             </span>
             <button 
               onClick={handleNext} 
-              style={{ background: 'transparent', border: '1px solid #cbd5e1', borderRadius: '4px', width: '32px', height: '32px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', color: '#0f172a' }}
+              className={`${styles.navArrow} ${styles.navArrowRight}`}
+              aria-label="Next feature"
             >
-              →
+              <ArrowRight size={24} strokeWidth={3} color="black" />
             </button>
           </div>
         </div>
@@ -99,7 +102,7 @@ export default function FeatureScrollSection() {
         <div style={{ position: 'relative', width: '100%' }}>
           <motion.div
             animate={{ x: `calc(-${activeIndex} * min(100vw - 4rem, 850px) - ${activeIndex * 2}rem)` }}
-            transition={{ type: "spring", stiffness: 300, damping: 30 }}
+            transition={{ type: "tween", ease: "easeInOut", duration: 0.6 }}
             style={{ display: 'flex', gap: '2rem', width: 'max-content' }}
           >
             {FEATURES.map((feature, i) => {
@@ -111,9 +114,7 @@ export default function FeatureScrollSection() {
                   key={i}
                   animate={{
                     opacity: isActive ? 1 : 0.4,
-                    filter: isActive ? 'blur(0px)' : 'blur(4px)',
-                    scale: isActive ? 1 : 0.95,
-                    boxShadow: isActive ? '0 10px 30px rgba(0,0,0,0.05)' : 'none'
+                    scale: isActive ? 1 : 0.95
                   }}
                   transition={{ duration: 0.5 }}
                   className={styles.featureCard}
@@ -129,7 +130,7 @@ export default function FeatureScrollSection() {
 
                   {/* Right Text */}
                   <div className={styles.featureTextContainer}>
-                    <h3 style={{ fontSize: '1.5rem', fontWeight: 600, color: '#0f172a', marginBottom: '1rem', lineHeight: 1.2 }}>
+                    <h3 style={{ fontSize: '1.5rem', fontWeight: 600, color: '#16325F', marginBottom: '1rem', lineHeight: 1.2 }}>
                       {feature.title}
                     </h3>
                     <p style={{ color: '#475569', fontSize: '0.95rem', lineHeight: 1.5, marginBottom: '2rem' }}>
