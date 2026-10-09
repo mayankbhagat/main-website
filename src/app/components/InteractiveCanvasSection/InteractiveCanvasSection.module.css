@@ -1,6 +1,6 @@
 .wrapper {
   width: 100%;
-  padding: 4rem 2rem;
+  padding: 4rem 2rem 1rem 2rem;
   background-color: #ffffff;
   display: flex;
   flex-direction: column;
@@ -21,7 +21,7 @@
 .notepadContainer {
   position: relative;
   width: 100%;
-  aspect-ratio: 1300 / 900;
+  aspect-ratio: 1300 / 650;
   height: auto;
   min-height: 25rem; /* Sane minimum for mobile */
   background-color: #f8fafc;
@@ -114,21 +114,21 @@
 }
 
 .itemTitle {
-  font-family: 'Caveat', cursive;
-  font-size: 2rem;
+  font-family: var(--font-display, inherit);
+  font-size: 1.4rem;
   font-weight: 700;
   color: #16325F;
-  border-bottom: 2px solid #16325F;
+  border-bottom: 2px solid #F17943;
   padding-bottom: 0.25rem;
   display: inline-block;
   align-self: flex-start;
 }
 
 .itemBody {
-  font-family: 'Caveat', cursive;
-  font-size: 1.5rem;
-  color: #16325F;
-  line-height: 1.4;
+  font-family: var(--font-ui, inherit);
+  font-size: 1rem;
+  color: #475569;
+  line-height: 1.6;
 }
 
 @media (max-width: 64rem) {
