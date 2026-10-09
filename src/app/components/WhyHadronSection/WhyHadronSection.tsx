@@ -17,8 +17,8 @@ const advantages = [
   },
   {
     num: "03",
-    title: "GenAI-Powered Transformation",
-    desc: "We are pioneering the next era of enterprise operations by natively embedding intelligent automation into ServiceNow, Salesforce, and SAP workflows. Our custom GenAI integrations transform static processes into dynamic, self-optimizing ecosystems that reduce manual overhead, accelerate decisions, and unlock new dimensions of operational efficiency."
+    title: "AI-Powered Transformation",
+    desc: "We bring AI, GenAI, Agentic AI and intelligent automation into enterprise platforms and workflows. By combining platform capabilities with practical AI use cases, we help reduce manual effort, accelerate decisions, improve user experiences and drive operational efficiency."
   },
   {
     num: "04",
