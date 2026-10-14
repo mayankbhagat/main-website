@@ -6,23 +6,18 @@ import Image from "next/image";
 
 const QUICK_LINKS = [
   { label: "Home", href: "/" },
-  { label: "About Us", href: "/about" },
-  { label: "Services", href: "/#services" },
-  { label: "Partners", href: "/partners" },
-  { label: "Contact Us", href: "#contact" }
+  { label: "About Us", href: "/why-hadron/about" },
+  { label: "Services", href: "/services" },
+  { label: "Partners", href: "/why-hadron/ecosystem-and-partners" },
+  { label: "Contact Us", href: "/contact" }
 ];
 
 const OFFICE_LOCATIONS = [
   { 
-    title: "Pune", 
-    name: "Hadron Global Business Solutions Pvt Ltd", 
-    address: "Pyramid Axis 10th Floor, Veerbhadra Nagar, Baner, Pune, Maharashtra 411045",
-    mapUrl: "https://maps.google.com/maps?q=Hadron%20GBS%20India%20Office&t=&z=14&ie=UTF8&iwloc=&output=embed"
-  },
-  { 
-    title: "Pune (Hinjewadi)", 
-    name: "Hadron Global Business Solutions Pvt Ltd", 
-    address: "A 1004, High Mont, Phase 2, Hinjewadi, Pune, Maharashtra-411057"
+    title: "USA", 
+    name: "Hadron GBS Inc.", 
+    address: "8 The Green, Ste R, Dover, DE 19901, USA",
+    mapUrl: "https://maps.google.com/maps?q=8%20The%20Green,%20Dover,%20DE&t=&z=14&ie=UTF8&iwloc=&output=embed"
   },
   { 
     title: "Singapore", 
@@ -37,10 +32,10 @@ const OFFICE_LOCATIONS = [
     mapUrl: "https://maps.google.com/maps?q=Westburry%20Tower%201,%20Business%20Bay,%20Dubai&t=&z=14&ie=UTF8&iwloc=&output=embed"
   },
   { 
-    title: "USA", 
-    name: "Hadron GBS Inc.", 
-    address: "8 The Green, Ste R, Dover, DE 19901, USA",
-    mapUrl: "https://maps.google.com/maps?q=8%20The%20Green,%20Dover,%20DE&t=&z=14&ie=UTF8&iwloc=&output=embed"
+    title: "India", 
+    name: "Hadron Global Business Solutions Pvt Ltd", 
+    address: "Pyramid Axis 10th Floor, Veerbhadra Nagar, Baner, Pune, Maharashtra 411045",
+    mapUrl: "https://maps.google.com/maps?q=Hadron%20GBS%20India%20Office&t=&z=14&ie=UTF8&iwloc=&output=embed"
   }
 ];
 
@@ -88,7 +83,7 @@ export default function Footer() {
                     src={OFFICE_LOCATIONS[activeMapIndex].mapUrl} 
                     width="100%" 
                     height="260" 
-                    style={{ border: 0, borderRadius: '8px', filter: 'grayscale(0.8) contrast(1.2)' }} 
+                    style={{ border: 0, borderRadius: '0.5rem', filter: 'grayscale(0.8) contrast(1.2)' }} 
                     allowFullScreen 
                     loading="lazy" 
                     referrerPolicy="no-referrer-when-downgrade"

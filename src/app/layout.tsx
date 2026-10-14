@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import GlobeWrapper from "./components/GlobalGlobe/GlobeWrapper";
 import { ThemeProvider } from "./components/ThemeProvider/ThemeProvider";
+import { Analytics } from "@vercel/analytics/next";
 
 import { Space_Grotesk, Inter } from "next/font/google";
 
@@ -17,20 +18,36 @@ const inter = Inter({
   display: "swap",
 });
 
-import { generatePageMetadata } from "./lib/seo";
+import { PAGES, SITE_URL, SITE_NAME, SITE_SHORT_NAME, OG_IMAGE } from "./lib/seo";
 import { getOrganizationSchema, getWebSiteSchema, getLocalBusinessSchema } from "./lib/schema";
 
+// Site-wide defaults. Each route sets its own title/description/canonical via pageMetadata() in lib/seo.ts.
 export const metadata: Metadata = {
-  ...generatePageMetadata({
-    title: "Hadron GBS | IT Consulting, ServiceNow, AI & Digital Transformation",
-    description: "Hadron GBS is a global IT consulting and digital transformation company specializing in ServiceNow, AI, Cloud, Enterprise Service Management, Automation, and Custom Software Development for enterprises worldwide.",
-    path: "/",
-  }),
-  metadataBase: new URL("https://www.hadrongbs.com"),
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: PAGES["/"].title,
+    template: `%s | ${SITE_SHORT_NAME}`,
+  },
+  description: PAGES["/"].description,
+  applicationName: SITE_NAME,
+  openGraph: {
+    siteName: SITE_NAME,
+    locale: "en_US",
+    type: "website",
+    images: [{ url: OG_IMAGE, width: 1200, height: 630, alt: SITE_NAME }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    site: "@HadronGBS",
+    images: [OG_IMAGE],
+  },
   icons: {
     icon: "https://res.cloudinary.com/ax6dtcht/image/upload/v1785324497/favicon-hadron_g5wrvr.png",
   },
 };
+
+import ScrollToTop from "./components/ScrollToTop/ScrollToTop";
+import SmoothScrollProvider from "./components/SmoothScroll/SmoothScrollProvider";
 
 export default function RootLayout({
   children,
@@ -38,16 +55,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${spaceGrotesk.variable} ${inter.variable}`} data-theme="light" suppressHydrationWarning>
       <body className="light-theme" suppressHydrationWarning>
-        {/* Anti-FOUC script for the Hero intro sequence */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              if (window.location.pathname === '/') {
-                document.body.classList.add('intro-running');
-              }
-            `
-          }}
-        />
+        {/* Legacy Hero intro script removed as PartnerRingSection does not use it */}
         
         {/*
           GlobeWrapper handles route-based blurring of the globe canvas.
@@ -55,8 +63,14 @@ export default function RootLayout({
         <GlobeWrapper />
         
         <ThemeProvider>
-          {children}
+          <SmoothScrollProvider>
+            {children}
+          </SmoothScrollProvider>
         </ThemeProvider>
+        
+        {/* Global Scroll to Top Button */}
+        <ScrollToTop />
+
         
         {/* SEO Structured Data */}
         <script
@@ -71,6 +85,7 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(getLocalBusinessSchema()) }}
         />
+        <Analytics />
       </body>
     </html>
   );
