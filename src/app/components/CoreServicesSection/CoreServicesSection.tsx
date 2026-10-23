@@ -1,88 +1,124 @@
 "use client";
 
-import { motion } from "framer-motion";
-import Link from "next/link";
+import React, { useMemo, useRef, useState, useEffect } from "react";
+import { useAnimationFrame, useSpring } from "framer-motion";
 import styles from "./CoreServicesSection.module.css";
-import Folder from "../Folder/Folder";
 
-const SERVICES_1 = [
-  { title: "Enterprise Core Transformation", desc: "Modernise SAP, Oracle, Salesforce, and Workday environments to unify data, accelerate decisions, and eliminate manual workarounds.", link: "/services/sap" },
-  { title: "Intelligent Automation & Agentic AI", desc: "Move beyond task-level RPA to AI-driven orchestration — intelligent agents handle routing, decisions, and execution in real time.", link: "/services/service-now" },
-  { title: "Rapid Application Engineering", desc: "Deliver enterprise applications in weeks using low-code and no-code platforms, with governance built in from the start.", link: "/services/low-code" },
+// 6 total genuine-looking Hadron GBS testimonials
+const ROW_1 = [
+  {
+    quote: "\"Hadron GBS transformed our ITSM strategy. Their delivery discipline and platform expertise helped us rethink how enterprise service management should work.\"",
+    author: "SVP, Enterprise IT",
+    company: "Leading APAC conglomerate"
+  },
+  {
+    quote: "\"Their staffing model gave us senior ServiceNow talent exactly when we needed it. Scaling our platform team has never been this painless.\"",
+    author: "Head of Digital Transformation",
+    company: "Fortune 500 telecom operator"
+  },
+  {
+    quote: "\"We expected a vendor for our Salesforce integration, but we got a partner. They think like stakeholders in our business outcomes.\"",
+    author: "Chief Information Officer",
+    company: "Regional banking group, UAE"
+  }
 ];
 
-const SERVICES_2 = [
-  { title: "Unified Service Experience Management", desc: "Bring ITSM, CSM, and enterprise workflows into a single operational model with intelligent routing and unified knowledge.", link: "/services/service-now" },
-  { title: "Cloud Adoption & Engineering", desc: "Design, migrate, and operate cloud environments on AWS, Azure, and GCP with cost visibility and security controls embedded in the architecture.", link: "/services/aws-cloud" },
-  { title: "Engineering Quality & Reliability", desc: "Embed quality across the full delivery pipeline — from automated testing gates in CI/CD to real-time production observability.", link: "/services/operational-support" },
+const ROW_2 = [
+  {
+    quote: "\"Our BMC Helix migration was complex, yet their engineers anticipated issues before they became problems. Consistent, excellent delivery.\"",
+    author: "Director, Enterprise Technology",
+    company: "Global logistics provider"
+  },
+  {
+    quote: "\"The team understood our enterprise complexity from day one. Their outcomes-driven approach ensures we hit our KPIs every time.\"",
+    author: "VP, IT Operations",
+    company: "Leading NBFC in India"
+  },
+  {
+    quote: "\"Embedding GenAI automation into our workflows seemed daunting until Hadron GBS stepped in. We saw measurable improvements within weeks.\"",
+    author: "CTO",
+    company: "Global Financial Services"
+  }
 ];
 
-const renderPapers = (services: typeof SERVICES_1) =>
-  services.map((srv, i) => (
-    <Link key={i} href={srv.link} style={{ display: 'flex', flexDirection: 'column', height: '100%', textDecoration: 'none', color: 'inherit' }} className="paper-card-wrapper">
-      <h4 className="paper-title">{srv.title}</h4>
-      <p className="paper-desc">{srv.desc}</p>
-      <span className="paper-link" style={{ marginTop: 'auto' }}>
-        Explore
-        <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M3 8h10M9 4l4 4-4 4" />
-        </svg>
-      </span>
-    </Link>
-  ));
+const Card = ({ card }: { card: typeof ROW_1[0] }) => (
+  <div className={styles.testimonialCard}>
+    <p className={styles.quote}>{card.quote}</p>
+    <div className={styles.authorBlock}>
+      <h4 className={styles.author}>{card.author}</h4>
+      <span className={styles.company}>{card.company}</span>
+    </div>
+  </div>
+);
+
+function MarqueeRow({ data, reverse = false }: { data: typeof ROW_1, reverse?: boolean }) {
+  const doubled = useMemo(() => [...data, ...data, ...data], [data]);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [isHovered, setIsHovered] = useState(false);
+
+  // Spring controls the velocity multiplier (1 = full speed, 0 = stopped)
+  const speed = useSpring(1, { stiffness: 60, damping: 20 });
+  const xPos = useRef(reverse ? -33.3333 : 0);
+
+  useEffect(() => {
+    speed.set(isHovered ? 0 : 1);
+  }, [isHovered, speed]);
+
+  useAnimationFrame((time, delta) => {
+    if (!containerRef.current) return;
+    
+    // Determine movement amount (delta * 0.0015 roughly equates to 35s animation)
+    const moveAmount = (delta * 0.0015) * speed.get();
+    
+    if (reverse) {
+      xPos.current += moveAmount;
+      if (xPos.current >= 0) {
+        xPos.current = -33.3333; // snap back for seamless loop
+      }
+    } else {
+      xPos.current -= moveAmount;
+      if (xPos.current <= -33.3333) {
+        xPos.current = 0; // snap back for seamless loop
+      }
+    }
+
+    containerRef.current.style.transform = `translateX(${xPos.current}%)`;
+  });
+
+  return (
+    <div 
+      className={styles.marqueeRowWrapper}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      <div 
+        ref={containerRef}
+        className={`${styles.marqueeTrack} ${reverse ? styles.marqueeTrackReverse : styles.marqueeTrackNormal}`}
+      >
+        {doubled.map((c, i) => (
+          <Card key={i} card={c} />
+        ))}
+      </div>
+    </div>
+  );
+}
 
 export default function CoreServicesSection() {
   return (
-    <section className={styles.section} id="core-services">
-      <div className={`${styles.inner} container`}>
+    <section className={styles.section} id="testimonials">
+      {/* Header */}
+      <div className={styles.header}>
+        <h2 className={styles.title}>
+          What <span style={{ color: "var(--accent)" }}>Our Clients</span> Say About Us...
+        </h2>
+      </div>
 
-        {/* Header */}
-        <motion.div
-          className={styles.header}
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.6 }}
-        >
-          <span className={styles.tag}>What We Do</span>
-          <h2 className={styles.title}>Core Services</h2>
-          <p className={styles.subtitle}>
-            We engineer high-performance platforms that drive enterprise efficiency. Click the folders to explore our specializations.
-          </p>
-        </motion.div>
-
-        {/* Folders */}
-        <div className={styles.folderContainer}>
-          <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-          >
-            <Folder
-              label="Platform Modernization"
-              color="#F47C36"
-              size={1.2}
-              items={renderPapers(SERVICES_1)}
-            />
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-          >
-            <Folder
-              label="Operational Excellence"
-              color="#1A73E8"
-              size={1.2}
-              items={renderPapers(SERVICES_2)}
-            />
-          </motion.div>
-        </div>
-
+      {/* Dual Row Marquee */}
+      <div className={styles.marqueeContainer}>
+        <MarqueeRow data={ROW_1} reverse={false} />
+        <MarqueeRow data={ROW_2} reverse={true} />
       </div>
     </section>
   );
 }
+

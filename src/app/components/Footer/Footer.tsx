@@ -3,26 +3,24 @@
 import { useState } from "react";
 import styles from "./Footer.module.css";
 import Image from "next/image";
+import Link from "next/link";
 
 const QUICK_LINKS = [
   { label: "Home", href: "/" },
-  { label: "About Us", href: "/about" },
-  { label: "Services", href: "/#services" },
-  { label: "Partners", href: "/partners" },
-  { label: "Contact Us", href: "#contact" }
+  { label: "About Us", href: "/why-hadron/about" },
+  { label: "Services", href: "/services" },
+  { label: "Partners", href: "/why-hadron/ecosystem-and-partners" },
+  { label: "Contact Us", href: "/contact" },
+  { label: "Privacy Policy", href: "/privacy-policy" },
+  { label: "Refund and Cancellation Policy", href: "/refund-and-cancellation-policy" },
 ];
 
 const OFFICE_LOCATIONS = [
   { 
-    title: "Pune", 
-    name: "Hadron Global Business Solutions Pvt Ltd", 
-    address: "Pyramid Axis 10th Floor, Veerbhadra Nagar, Baner, Pune, Maharashtra 411045",
-    mapUrl: "https://maps.google.com/maps?q=Hadron%20GBS%20India%20Office&t=&z=14&ie=UTF8&iwloc=&output=embed"
-  },
-  { 
-    title: "Pune (Hinjewadi)", 
-    name: "Hadron Global Business Solutions Pvt Ltd", 
-    address: "A 1004, High Mont, Phase 2, Hinjewadi, Pune, Maharashtra-411057"
+    title: "USA", 
+    name: "Hadron GBS Inc.", 
+    address: "8 The Green, Ste R, Dover, DE 19901, USA",
+    mapUrl: "https://maps.google.com/maps?q=8%20The%20Green,%20Dover,%20DE&t=&z=14&ie=UTF8&iwloc=&output=embed"
   },
   { 
     title: "Singapore", 
@@ -37,10 +35,10 @@ const OFFICE_LOCATIONS = [
     mapUrl: "https://maps.google.com/maps?q=Westburry%20Tower%201,%20Business%20Bay,%20Dubai&t=&z=14&ie=UTF8&iwloc=&output=embed"
   },
   { 
-    title: "USA", 
-    name: "Hadron GBS Inc.", 
-    address: "8 The Green, Ste R, Dover, DE 19901, USA",
-    mapUrl: "https://maps.google.com/maps?q=8%20The%20Green,%20Dover,%20DE&t=&z=14&ie=UTF8&iwloc=&output=embed"
+    title: "India", 
+    name: "Hadron Global Business Solutions Pvt Ltd", 
+    address: "Pyramid Axis 10th Floor, Veerbhadra Nagar, Baner, Pune, Maharashtra 411045",
+    mapUrl: "https://maps.google.com/maps?q=Hadron%20GBS%20India%20Office&t=&z=14&ie=UTF8&iwloc=&output=embed"
   }
 ];
 
@@ -58,7 +56,7 @@ export default function Footer() {
             <div className={styles.brand}>
               <Image 
                 src="https://res.cloudinary.com/ax6dtcht/image/upload/v1785324498/Hadron-Logo_lt4uaa.png" 
-                alt="Hadron GBS" 
+                alt="Hadron GBS - Enterprise Solutions for ServiceNow, Salesforce, BMC Helix & SAP" 
                 width={160}
                 height={40}
                 className={styles.logoImage} 
@@ -88,7 +86,7 @@ export default function Footer() {
                     src={OFFICE_LOCATIONS[activeMapIndex].mapUrl} 
                     width="100%" 
                     height="260" 
-                    style={{ border: 0, borderRadius: '8px', filter: 'grayscale(0.8) contrast(1.2)' }} 
+                    style={{ border: 0, borderRadius: '0.5rem', filter: 'grayscale(0.8) contrast(1.2)' }} 
                     allowFullScreen 
                     loading="lazy" 
                     referrerPolicy="no-referrer-when-downgrade"
@@ -104,7 +102,7 @@ export default function Footer() {
             <ul className={styles.linkList}>
               {QUICK_LINKS.map((link) => (
                 <li key={link.label}>
-                  <a href={link.href} className={styles.footerLink}>{link.label}</a>
+                  <Link href={link.href} className={styles.footerLink}>{link.label}</Link>
                 </li>
               ))}
             </ul>
@@ -130,9 +128,19 @@ export default function Footer() {
 
         {/* Bottom row */}
         <div className={styles.bottom}>
-          <span className={styles.copyright}>
-            © {year} Hadron - Global Business Solutions. All rights reserved.
-          </span>
+          <div className={styles.copyrightGroup}>
+            <span className={styles.copyright}>
+              © {year} Hadron - Global Business Solutions. All Rights Reserved
+            </span>
+            <span className={styles.legalSeparator}>|</span>
+            <Link href="/privacy-policy" className={styles.legalLink}>
+              Privacy Policy
+            </Link>
+            <span className={styles.legalSeparator}>|</span>
+            <Link href="/refund-and-cancellation-policy" className={styles.legalLink}>
+              Refund and Cancellation Policy
+            </Link>
+          </div>
           <div className={styles.socialLinks}>
             <a href="https://x.com/HadronGBS" target="_blank" rel="noopener noreferrer" aria-label="X (Twitter)" className={styles.socialIcon}>𝕏</a>
             <a href="https://www.linkedin.com/company/hadron-gbs/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className={styles.socialIcon}>in</a>
